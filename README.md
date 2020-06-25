@@ -1,0 +1,22 @@
+# Django-Heroku App Boilerplate
+
+Quick start for those that plan on deploying their Django app on Heroku. Gunicorn is the production server that will be installed. Cloudinary is installed/set-up for easy image/video hosting. Sign up for a Cloudinary account here: https://cloudinary.com/. On using Cloudinary with Django: https://cloudinary.com/documentation/django_integration
+
+Pre-reqs: Virtualenv
+
+To use:
+
+-> Open your terminal and navigate to the ` django_heroku_app_boilerplate ` directory
+
+-> Set up a new Virtualenv environment: ` $ virtualenv env `
+
+-> Activate the virtual environment: ` $ source env/bin/activate `
+
+-> Install dependencies from the requirements.txt file: ` $ pip install -r requirements.txt `
+
+-> Set .env variables. Choose between SQLite3 and PostgreSQL setup.
+    
+*When you deploy to Heroku, you don't need to set the DATABASE_URL in the Heroku config vars. Thanks to the Django-Heroku module, Heroku will auto-detect a Python/Django app and create/connect a PostgreSQL database as a Heroku add-on.*
+
+-> Configure your .gitignore
+
