@@ -20,6 +20,8 @@ To use:
 
 -> Configure your .gitignore
 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 This boilerplate comes with rename and makesuper commands:
 
 *To create a super user with name & pw as 'admin:*
