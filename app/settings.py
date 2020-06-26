@@ -4,14 +4,18 @@ import cloudinary
 import dj_database_url
 from dotenv import load_dotenv
 
+
 DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-dotenv_file = os.path.join(BASE_DIR, ".env")
+
+# Dotenv config
+dotenv_file = os.path.join(BASE_DIR, '.env')
 if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
 
-ENVIRONMENT = os.getenv('ENVIRONMENT')
 SECRET_KEY = os.getenv('SECRET_KEY')
+ENVIRONMENT = os.getenv('ENVIRONMENT')
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
 
 INSTALLED_APPS = [
@@ -22,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core'
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -33,7 +37,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -54,32 +58,58 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'app.wsgi.application'
+
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# ---------------------------- Static Files Setup ---------------------------- #
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Cloudinary
+cloudinary.config(
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET')
+)
 
-# --------------------------------- Database --------------------------------- #
-DATABASES = {}
-# Can choose between SQLite3 and PostgreSQL in .env:
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# Email Server Setup
+EMAIL_BACKEND = 'django.corel.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_USE_TLS = True
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
-# ---------------------- Production Environment Settings --------------------- #
 if ENVIRONMENT == 'production':
     DEBUG = False
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-    SECRET_KEY = os.getenv('SECRET_KEY')
     SESSION_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -88,7 +118,6 @@ if ENVIRONMENT == 'production':
     SECURE_REDIRECT_EXEMPT = []
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    # Makes it easier to debug after DEBUG=False
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -128,23 +157,6 @@ if ENVIRONMENT == 'production':
         }
     }
 
-# -------------------------------- Cloudinary -------------------------------- #
-cloudinary.config(
-    cloud_name=os.getenv('CLOUD_NAME'),
-    api_key=os.getenv('API_KEY'),
-    api_secret=os.getenv("API_SECRET")
-)
 
-
-# ---------------------------- Email Server set-up --------------------------- #
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_USE_TLS = True
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
-
-# ---------------------------------------------------------------------------- #
 django_heroku.settings(config=locals(), staticfiles=False, logging=False)
 del DATABASES['default']['OPTIONS']['sslmode']
