@@ -5,15 +5,20 @@ import dj_database_url
 from dotenv import load_dotenv
 
 
+# ---------------------------------------------------------------------------- #
 DEBUG = True
+
+#Base Directory:
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Dotenv config
+# Dotenv config:
 dotenv_file = os.path.join(BASE_DIR, '.env')
 if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
 
 SECRET_KEY = os.getenv('SECRET_KEY')
+
+# Check if ENVIRONMENT is dev or prod:
 ENVIRONMENT = os.getenv('ENVIRONMENT')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
@@ -78,13 +83,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# Localization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# Static config
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -106,7 +112,7 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-
+# Production env settings
 if ENVIRONMENT == 'production':
     DEBUG = False
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
@@ -118,6 +124,7 @@ if ENVIRONMENT == 'production':
     SECURE_REDIRECT_EXEMPT = []
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # This makes debugging with Heroku logs easier when DEBUG=False:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
