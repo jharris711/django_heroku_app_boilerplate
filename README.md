@@ -20,3 +20,14 @@ To use:
 
 -> Configure your .gitignore
 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+This boilerplate comes with rename and makesuper commands:
+
+*To create a super user with name & pw as 'admin:*
+
+`$ ./manage.py makesuper`
+
+*To change the name of your app:*
+
+`$ ./manage.py rename OLD_APP_NAME NEW_APP_NAME`
