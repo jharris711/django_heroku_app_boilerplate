@@ -15,8 +15,6 @@ To use:
 -> Install dependencies from the requirements.txt file: ` $ pip install -r requirements.txt `
 
 -> Set .env variables. Choose between SQLite3 and PostgreSQL setup.
-    
-*When you deploy to Heroku, you don't need to set the DATABASE_URL in the Heroku config vars. Thanks to the Django-Heroku module, Heroku will auto-detect a Python/Django app and create/connect a PostgreSQL database as a Heroku add-on.*
 
 -> Configure your .gitignore
 
